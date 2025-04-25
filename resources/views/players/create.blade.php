@@ -7,13 +7,13 @@
 
             <div class="mb-4">
                 <x-input-label for="name" value="Imię i nazwisko" />
-                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" required />
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" value="{{ old('name') }}" required />
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
             <div class="mb-4">
                 <x-input-label for="club" value="Klub" />
-                <x-text-input id="club" name="club" type="text" class="mt-1 block w-full" required />
+                <x-text-input id="club" name="club" type="text" class="mt-1 block w-full" value="{{ old('club') }}" required />
                 <x-input-error :messages="$errors->get('club')" class="mt-2" />
             </div>
 
@@ -21,10 +21,10 @@
                 <x-input-label for="position" value="Pozycja" />
                 <select name="position" id="position" class="form-select mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     <option value="">Wybierz pozycję</option>
-                    <option value="bramkarz">Bramkarz</option>
-                    <option value="obrońca">Obrońca</option>
-                    <option value="pomocnik">Pomocnik</option>
-                    <option value="napastnik">Napastnik</option>
+                    <option value="bramkarz" {{ old('position') == 'bramkarz' ? 'selected' : '' }}>Bramkarz</option>
+                    <option value="obrońca" {{ old('position') == 'obrońca' ? 'selected' : '' }}>Obrońca</option>
+                    <option value="pomocnik" {{ old('position') == 'pomocnik' ? 'selected' : '' }}>Pomocnik</option>
+                    <option value="napastnik" {{ old('position') == 'napastnik' ? 'selected' : '' }}>Napastnik</option>
                 </select>
                 <x-input-error :messages="$errors->get('position')" class="mt-2" />
             </div>

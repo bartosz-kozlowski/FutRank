@@ -7,10 +7,8 @@ use App\Http\Controllers\CommentAnalysisController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PlayerController::class, 'index'])->name('players.index');
-Route::post('/comments/analyze', [CommentAnalysisController::class, 'analyze'])
-    ->middleware('auth')
-    ->name('comments.analyze');
-// Najpierw create — zanim Laravel zdąży pomyśleć, że "create" to ID
+Route::post('/comments/analyze', [CommentAnalysisController::class, 'analyze'])->name('comments.analyze');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/players/create', [PlayerController::class, 'create'])->name('players.create');
     Route::post('/players', [PlayerController::class, 'store'])->name('players.store');
@@ -23,7 +21,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/ratings/{rating}', [RatingController::class, 'destroy'])->name('ratings.destroy');
 });
 
-// Dopiero później show – z dynamicznym parametrem
 Route::get('/players/{player}', [PlayerController::class, 'show'])->name('players.show');
 
 // Profil + dashboard

@@ -16,22 +16,22 @@ class PlayerController extends Controller
         // Pobieramy zawodników z relacjami + sort/filtrowanie
         $query = Player::with('ratings');
 
-        // 🔍 Filtrowanie po klubie
+        // Filtrowanie po klubie
         if ($request->filled('club')) {
             $query->where('club', $request->club);
         }
 
-        // 🔍 Filtrowanie po pozycji
+        // Filtrowanie po pozycji
         if ($request->filled('position')) {
             $query->where('position', $request->position);
         }
 
-        // 🔍 Filtrowanie po miejscu urodzenia
+        // Filtrowanie po miejscu urodzenia
         if ($request->filled('birthplace')) {
             $query->where('birthplace', $request->birthplace);
         }
 
-        // 🔃 Sortowanie
+        // Sortowanie
         if ($request->sort === 'rating') {
             $query->withAvg('ratings', 'rating')->orderByDesc('ratings_avg_rating');
         } elseif ($request->sort === 'name') {
@@ -42,19 +42,28 @@ class PlayerController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
         }
 
-        // 💾 Pobieramy graczy z bazy
-        $players = $query->get();
+        // Pobieramy graczy z bazy
+        //$players = $query->get();
 
-        // 🗣️ Wyszukiwanie komentarzy
-        if ($search = $request->input('comment_search')) {
+        // Wyszukiwanie komentarzy
+       /* if ($search = $request->input('comment_search')) {
             $players = $players->filter(function ($player) use ($search) {
                 return $player->ratings->contains(function ($rating) use ($search) {
                     return str_contains(strtolower($rating->comment), strtolower($search));
                 });
             });
         }
+        */
+        if ($search = $request->input('comment_search')) {
+            $query->whereHas('ratings', function ($subquery) use ($search) {
+                $subquery->whereRaw('MATCH(comment) AGAINST (? IN NATURAL LANGUAGE MODE)', [$search]);
+            });
+            //dd($query->toSql(), $query->getBindings());
+        }
 
-        // 🔢 Dane pomocnicze do formularza
+        $players = $query->get();
+
+        // Dane pomocnicze do formularza
         $clubs = Player::select('club')->distinct()->pluck('club');
         $positions = Player::select('position')->distinct()->pluck('position');
         $birthplaces = Player::select('birthplace')->whereNotNull('birthplace')->distinct()->pluck('birthplace');
@@ -103,17 +112,18 @@ class PlayerController extends Controller
         return redirect()->route('players.index')->with('message', 'Zawodnik dodany!');
     }
 
-    public function ranking()
+    public function ranking(Request $request)
     {
+        $limit = $request->input('limit', 5);
+
         $players = Player::with('ratings')
-            ->get()
-            ->sortByDesc(fn($player) => $player->averageRating())
-            ->values()
-            ->take(5);
+            ->withAvg('ratings', 'rating')
+            ->orderByDesc('ratings_avg_rating')
+            ->take($limit)
+            ->get();
 
         return view('players.ranking', compact('players'));
     }
-
 
     /**
      * Display the specified resource.
@@ -147,7 +157,7 @@ class PlayerController extends Controller
         $player = Player::findOrFail($id);
 
         if ($player->user_id !== Auth::id()) {
-            abort(403); // Forbidden
+            abort(403);
         }
 
         $validated = $request->validate([

@@ -21,7 +21,7 @@ class RatingController extends Controller
                           ->first();
 
         if ($existing) {
-            return redirect()->back()->with('error', 'Już oceniałeś tego zawodnika.');
+            return redirect()->back();
         }
 
         Rating::create([

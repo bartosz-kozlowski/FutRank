@@ -1,10 +1,16 @@
 <x-app-layout>
     <div class="max-w-4xl mx-auto px-4 py-6">
-            <a href="{{ route('players.index') }}"
+        @if (request('from') === 'ranking')
+        <a href="{{ route('players.ranking') }}"
         class="text-sm text-blue-600 hover:underline mb-4 inline-block">
-            ← Powrót do listy zawodników
+            ← Powrót do rankingu zawodników
         </a>
-
+        @else
+            <a href="{{ route('players.index') }}"
+            class="text-sm text-blue-600 hover:underline mb-4 inline-block">
+                ← Powrót do listy zawodników
+            </a>
+        @endif
         {{-- Nagłówek --}}
         <div class="flex items-center gap-6 bg-white rounded-lg shadow p-6">
             {{-- Zdjęcie --}}

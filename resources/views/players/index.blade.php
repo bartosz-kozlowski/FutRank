@@ -33,10 +33,10 @@
             <input type="text" name="comment_search" id="comment_search"
                 value="{{ request('comment_search') }}"
                 class="form-input rounded-md border-gray-300 w-64"
-                placeholder="np. Messi, słaby, genialny...">
+                placeholder="np. Talent, słaby, genialny...">
         </div>
         <div>
-            <label for="name" class="block text-sm font-semibold mb-1">Szukaj po nazwie:</label>
+            <label for="name" class="block text-sm font-semibold mb-1">Szukaj po zawodniku:</label>
             <input type="text" name="name" id="name"
                 value="{{ request('name') }}"
                 class="form-input rounded-md border-gray-300 w-64"
@@ -66,7 +66,7 @@
 
     </form>
     
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-4xl mx-auto px-4 pt-6 pb-8">
     <div class="flex justify-between items-center mb-6">
             <h2 class="text-3xl font-bold">📋 Lista zawodników</h2>
 

@@ -30,10 +30,9 @@
                     <a href="{{ route('players.show', $rating->player_id) }}"
                        class="text-gray-600 hover:underline">← Wróć do zawodnika</a>
 
-                    <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow transition">
-                        💾 Zapisz zmiany
-                    </button>
+                    <x-primary-button class="mt-6">
+                    💾 Zapisz zmiany
+                    </x-primary-button>
                 </div>
             </form>
         </div>
