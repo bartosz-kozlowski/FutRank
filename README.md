@@ -29,7 +29,7 @@
 
 ## 🧑‍💻 Technologie
 
-- **Backend:** Laravel 10 / 12 (MVC + Eloquent ORM)
+- **Backend:** Laravel (MVC + Eloquent ORM)
 - **Frontend:** Blade + Tailwind CSS + Alpine.js
 - **AI:** Hugging Face API (`cardiffnlp/twitter-xlm-roberta-base-sentiment`)
 - **Autoryzacja:** Laravel Breeze (z middleware do weryfikacji)
